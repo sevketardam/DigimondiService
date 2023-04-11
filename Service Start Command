@@ -1,0 +1,8 @@
+Ana DosyaYolu: C:\Users\arda2\source\repos\DigimondiService\DigimondiService\bin\Debug\DigimondiService.exe
+
+Dosya Yolu: cd C:/Windows/Microsoft.NET/Framework/v4.0.30319
+
+Yükleme: InstallUtil.exe C:\Users\arda2\source\repos\DigimondiService\DigimondiService\bin\Debug\DigimondiService.exe
+
+
+Silme: InstallUtil.exe -u C:\Users\arda2\source\repos\DigimondiService\DigimondiService\bin\Debug\DigimondiService.exe 
