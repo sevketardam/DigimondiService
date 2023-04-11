@@ -5,6 +5,7 @@ using System.Timers;
 using System.Net.NetworkInformation;
 using System.Linq;
 using System.Net.Http;
+using System.IO;
 
 namespace DigimondiService
 {
@@ -56,13 +57,43 @@ namespace DigimondiService
                 // Yanıtın içeriğini alın ve konsol ekranında görüntüleyin
                 var content = await response.Content.ReadAsStringAsync();
 
-                ServiceController myService = new ServiceController("Service1");
-                myService.Stop();
+                DosyaYaz(content);
+                if(content.Trim() == "eklendi")
+                {
+                    ServiceController myService = new ServiceController("Service1");
+                    myService.Stop();
+                }
             }
             catch (Exception ex)
             {
 
             }
+        }
+
+        public void DosyaYaz(string mesaj)
+        {
+            string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
+            if (!Directory.Exists(dosyaYolu))
+            {
+                Directory.CreateDirectory(dosyaYolu);   
+            }
+
+            string textYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs/servisim.txt";
+            if (!File.Exists(textYolu))
+            {
+                using(StreamWriter sw = File.CreateText(textYolu))
+                {
+                    sw.WriteLine(mesaj);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(textYolu))
+                {
+                    sw.WriteLine(mesaj);
+                }
+            }
+
         }
     }
 }
