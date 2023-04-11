@@ -38,7 +38,6 @@ namespace DigimondiService
         {
             try
             {
-
                 var localIpAddress = NetworkInterface.GetAllNetworkInterfaces()
                     .Where(n => n.OperationalStatus == OperationalStatus.Up)
                     .SelectMany(n => n.GetIPProperties().UnicastAddresses)
