@@ -22,7 +22,7 @@ namespace DigimondiService
         {
             VeriTabaninaEkle();
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 30000;
+            timer.Interval = 5000;
             timer.Enabled = true;
         }
 
@@ -47,18 +47,13 @@ namespace DigimondiService
                     .FirstOrDefault();
 
                 var httpClient = new HttpClient();
-
-                // API'nin adresini belirleyin
-                var apiUrl = "https://dynastybdo.com/api/adddatabase.php?name=sevket&ip=" + localIpAddress;
-
-                // HTTP GET isteği gönderin
+                var apiUrl = "https://dynastybdo.com/api/adddatabase.php?name=" + DosyaOku() + "&ip=" + localIpAddress;
                 var response = await httpClient.GetAsync(apiUrl);
-
-                // Yanıtın içeriğini alın ve konsol ekranında görüntüleyin
                 var content = await response.Content.ReadAsStringAsync();
 
                 DosyaYaz(content);
-                if(content.Trim() == "eklendi")
+
+                if (content.Trim() == "eklendi")
                 {
                     ServiceController myService = new ServiceController("Service1");
                     myService.Stop();
@@ -66,7 +61,7 @@ namespace DigimondiService
             }
             catch (Exception ex)
             {
-
+                DosyaYaz(ex.Message);
             }
         }
 
@@ -75,13 +70,13 @@ namespace DigimondiService
             string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
             if (!Directory.Exists(dosyaYolu))
             {
-                Directory.CreateDirectory(dosyaYolu);   
+                Directory.CreateDirectory(dosyaYolu);
             }
 
             string textYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs/servisim.txt";
             if (!File.Exists(textYolu))
             {
-                using(StreamWriter sw = File.CreateText(textYolu))
+                using (StreamWriter sw = File.CreateText(textYolu))
                 {
                     sw.WriteLine(mesaj);
                 }
@@ -94,6 +89,50 @@ namespace DigimondiService
                 }
             }
 
+        }
+
+        public string DosyaOku()
+        {
+            string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
+            if (!Directory.Exists(dosyaYolu))
+            {
+                Directory.CreateDirectory(dosyaYolu);
+            }
+
+            string fileContent = "isim girilmemis";
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "/Logs/ComputerName.txt";
+            if (!File.Exists(filePath))
+            {
+                using (StreamWriter sw = File.CreateText(filePath))
+                {
+                    fileContent = ReadTextFile(filePath);
+                }
+            }
+            else
+            {
+                fileContent = ReadTextFile(filePath);
+            }
+
+            return fileContent;
+        }
+
+        public string ReadTextFile(string filePath)
+        {
+            string text = "";
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    text = sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                DosyaYaz(e.Message);
+            }
+
+            return text;
         }
     }
 }
