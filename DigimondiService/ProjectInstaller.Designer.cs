@@ -40,6 +40,8 @@
             // 
             // serviceInstaller1
             // 
+            this.serviceInstaller1.Description = "Giriş Takip Service";
+            this.serviceInstaller1.DisplayName = "DigiService";
             this.serviceInstaller1.ServiceName = "Service1";
             // 
             // ProjectInstaller
