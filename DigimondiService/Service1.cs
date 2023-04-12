@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ServiceProcess;
-using MySql.Data.MySqlClient;
 using System.Timers;
 using System.Net.NetworkInformation;
 using System.Linq;
@@ -51,7 +50,7 @@ namespace DigimondiService
                 var response = await httpClient.GetAsync(apiUrl);
                 var content = await response.Content.ReadAsStringAsync();
 
-                DosyaYaz(content);
+                DosyaYaz(content + " - " + DateTime.Now);
 
                 if (content.Trim() == "eklendi")
                 {
@@ -61,7 +60,7 @@ namespace DigimondiService
             }
             catch (Exception ex)
             {
-                DosyaYaz(ex.Message);
+                DosyaYaz(ex.Message + " - " + DateTime.Now);
             }
         }
 
@@ -129,7 +128,7 @@ namespace DigimondiService
             }
             catch (Exception e)
             {
-                DosyaYaz(e.Message);
+                DosyaYaz(e.Message + " - " + DateTime.Now);
             }
 
             return text;
