@@ -68,26 +68,33 @@ namespace DigimondiService
 
         public void DosyaYaz(string mesaj)
         {
-            string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
-            if (!Directory.Exists(dosyaYolu))
+            try
             {
-                Directory.CreateDirectory(dosyaYolu);
-            }
+                string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
+                if (!Directory.Exists(dosyaYolu))
+                {
+                    Directory.CreateDirectory(dosyaYolu);
+                }
 
-            string textYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs/servisim.txt";
-            if (!File.Exists(textYolu))
-            {
-                using (StreamWriter sw = File.CreateText(textYolu))
+                string textYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs/servisim.txt";
+                if (!File.Exists(textYolu))
                 {
-                    sw.WriteLine(mesaj);
+                    using (StreamWriter sw = File.CreateText(textYolu))
+                    {
+                        sw.WriteLine(mesaj);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = File.AppendText(textYolu))
+                    {
+                        sw.WriteLine(mesaj);
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                using (StreamWriter sw = File.AppendText(textYolu))
-                {
-                    sw.WriteLine(mesaj);
-                }
+                DosyaYaz(e.Message + " - " + DateTime.Now);
             }
 
         }
@@ -114,7 +121,7 @@ namespace DigimondiService
                 fileContent = ReadTextFile(filePath);
             }
 
-            return  fileContent;
+            return fileContent;
         }
 
         public string ReadTextFile(string filePath)
