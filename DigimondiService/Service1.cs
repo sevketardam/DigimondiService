@@ -47,7 +47,7 @@ namespace DigimondiService
                     .FirstOrDefault();
 
                 var httpClient = new HttpClient();
-                var name = await DosyaOku();
+                var name = DosyaOku();
                 var apiUrl = "https://dynastybdo.com/api/adddatabase.php?name=" + name + "&ip=" + localIpAddress;
                 var response = await httpClient.GetAsync(apiUrl);
                 var content = await response.Content.ReadAsStringAsync();
@@ -99,7 +99,7 @@ namespace DigimondiService
 
         }
 
-        public async Task<string> DosyaOku()
+        public string DosyaOku()
         {
             string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
             if (!Directory.Exists(dosyaYolu))
@@ -107,7 +107,7 @@ namespace DigimondiService
                 Directory.CreateDirectory(dosyaYolu);
             }
 
-            string fileContent = "isim girilmemis";
+            string  fileContent = "isim girilmemis";
             string filePath = AppDomain.CurrentDomain.BaseDirectory + "/Logs/ComputerName.txt";
             if (!File.Exists(filePath))
             {
