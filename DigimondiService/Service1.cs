@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Linq;
 using System.Net.Http;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DigimondiService
 {
@@ -46,7 +47,8 @@ namespace DigimondiService
                     .FirstOrDefault();
 
                 var httpClient = new HttpClient();
-                var apiUrl = "https://dynastybdo.com/api/adddatabase.php?name=" + DosyaOku() + "&ip=" + localIpAddress;
+                var name = await DosyaOku();
+                var apiUrl = "https://dynastybdo.com/api/adddatabase.php?name=" + name + "&ip=" + localIpAddress;
                 var response = await httpClient.GetAsync(apiUrl);
                 var content = await response.Content.ReadAsStringAsync();
 
@@ -90,7 +92,7 @@ namespace DigimondiService
 
         }
 
-        public string DosyaOku()
+        public async Task<string> DosyaOku()
         {
             string dosyaYolu = AppDomain.CurrentDomain.BaseDirectory + "/Logs";
             if (!Directory.Exists(dosyaYolu))
@@ -112,7 +114,7 @@ namespace DigimondiService
                 fileContent = ReadTextFile(filePath);
             }
 
-            return fileContent;
+            return  fileContent;
         }
 
         public string ReadTextFile(string filePath)
